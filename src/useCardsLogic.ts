@@ -64,6 +64,17 @@ const TOTAL_SECONDS_4x4 = 60;
 const TOTAL_SECONDS_6x6 = 120;
 const TOTAL_SECONDS_8x8 = 180;
 
+const shuffleCards = (cardSymbols: string[]) => {
+  const shuffleCardsValue = [...cardSymbols.concat(cardSymbols)];
+  for (let i = shuffleCardsValue.length - 1; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * i + 1);
+    const helper = shuffleCardsValue[i];
+    shuffleCardsValue[i] = shuffleCardsValue[randomIndex];
+    shuffleCardsValue[randomIndex] = helper;
+  }
+  return shuffleCardsValue;
+};
+
 export function useCardsLogic() {
   const [page, setPage] = useState<"tutorial" | "play" | "finish">("tutorial");
   const [selectedBoardSize, setSelectedBoardSize] = useState<
@@ -84,10 +95,6 @@ export function useCardsLogic() {
     setPage("play");
   }, []);
 
-  const setPageAtFinish = useCallback(() => {
-    setPage("finish");
-  }, []);
-
   const set4x4BoardSize = useCallback(() => {
     setSelectedBoardSize("4x4");
   }, []);
@@ -101,15 +108,15 @@ export function useCardsLogic() {
   }, []);
 
   const set4x4Board = useCallback(() => {
-    setBoard(CARD_SYMBOLS_4x4);
+    setBoard(shuffleCards(CARD_SYMBOLS_4x4));
   }, []);
 
   const set6x6Board = useCallback(() => {
-    setBoard(CARD_SYMBOLS_6x6);
+    setBoard(shuffleCards(CARD_SYMBOLS_6x6));
   }, []);
 
   const set8x8Board = useCallback(() => {
-    setBoard(CARD_SYMBOLS_8x8);
+    setBoard(shuffleCards(CARD_SYMBOLS_8x8));
   }, []);
 
   useEffect(() => {
@@ -216,13 +223,13 @@ export function useCardsLogic() {
 
   return {
     page,
-    selectedBoardSize,
     board,
     flippedUpCardIndices,
+    currentCardPairIndices,
     playerMovesCount,
     secondsElapsed,
+    selectedBoardSize,
     setPageAtPlay,
-    setPageAtFinish,
     set4x4BoardSize,
     set6x6BoardSize,
     set8x8BoardSize,

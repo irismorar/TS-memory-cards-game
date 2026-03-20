@@ -1,16 +1,17 @@
 import "./App.css";
+import { CardDesign } from "./CardDesign";
 import { useCardsLogic } from "./useCardsLogic";
 
 export default function App() {
   const {
     page,
-    selectedBoardSize,
     board,
     flippedUpCardIndices,
+    currentCardPairIndices,
     playerMovesCount,
     secondsElapsed,
+    selectedBoardSize,
     setPageAtPlay,
-    setPageAtFinish,
     set4x4BoardSize,
     set6x6BoardSize,
     set8x8BoardSize,
@@ -24,29 +25,43 @@ export default function App() {
   return (
     <main>
       {page === "tutorial" && (
-        <section>
+        <section className="tutorial_container">
           <section className="tutorial_text">
             <h1>Welcome to the Memory Cards Game</h1>
             <h3>where your brain gets a workout and your luck gets judged</h3>
-            <p>
-              Flip two cards at a time and try to find matching pairs. If they
-              match, congrats, you’re officially smarter than you were 2 seconds
-              ago. If not… well, at least you tried.
-            </p>
-            <p>
-              But don’t get too comfortable! Each level comes with its own
-              “tick-tock pressure”:
-            </p>
-            <p>4×4 grid → 60 seconds & maximum 19 moves</p>
-            <p>6×6 grid → 140 seconds & maximum 39 moves</p>
-            <p>8×8 grid → 220 seconds & maximum 67 moves</p>
-            <p>
-              Yes, we’re timing you. Yes, we’re counting your moves. No, we’re
-              not judging… okay, maybe a little. Stay within the limits if you
-              want to win or risk eternal shame (and a restart button).
-            </p>{" "}
-            <br />
-            <p>Good luck, memory master. Try not to forget why you’re here!</p>
+            <section>
+              <p>
+                Flip two cards at a time and try to find matching pairs. If they
+                match, congrats, you’re officially smarter than you were 2
+                seconds ago. If not… well, at least you tried.
+              </p>
+              <p>
+                But don’t get too comfortable! Each level comes with its own
+                “tick-tock pressure”:
+              </p>
+              <div>
+                <p>
+                  <span>4×4</span> grid → <span>60</span> seconds & maximum{" "}
+                  <span>19</span> moves
+                </p>
+                <p>
+                  <span>6×6</span> grid → <span>140</span> seconds & maximum{" "}
+                  <span>39</span> moves
+                </p>
+                <p>
+                  <span>8×8</span> grid → <span>220</span> seconds & maximum{" "}
+                  <span>67</span> moves
+                </p>
+              </div>
+              <p>
+                Yes, we’re timing you. Yes, we’re counting your moves. No, we’re
+                not judging… okay, maybe a little. Stay within the limits if you
+                want to win or risk eternal shame (and a restart button).
+              </p>
+              <p>
+                Good luck, memory master. Try not to forget why you’re here!
+              </p>
+            </section>
           </section>
           <section className="board_size_buttons_container">
             <button
@@ -79,7 +94,30 @@ export default function App() {
           </section>
         </section>
       )}
-      {page==="play" && ()}
+      {page === "play" && (
+        <section className="game_wrapper">
+          <div className="header_game_container">
+            {secondsElapsed} / {playerMovesCount}
+          </div>
+          <section className="game_container">
+            {board.map((currentCardSymbol, index) => {
+              return (
+                <CardDesign
+                  key={index}
+                  symbol={currentCardSymbol}
+                  isFlippedUp={
+                    currentCardPairIndices.includes(index) ||
+                    flippedUpCardIndices.includes(index)
+                  }
+                  handleClickCard={() => {
+                    flipUpCard(index);
+                  }}
+                />
+              );
+            })}
+          </section>
+        </section>
+      )}
     </main>
   );
 }

@@ -1,3 +1,228 @@
-*, **::before, *::after {
+@import url('https://fonts.googleapis.com/css2?family=Emilys+Candy&display=swap');
+
+*, *::before, *::after {
   box-sizing: border-box;
+}
+
+:root {
+  /* ---------- sizing system ---------- */
+  --card-size: clamp(10rem, 17vmin, 17rem);
+  --card-border-top: clamp(2px, 0.3vmin, 3px);
+  --card-border-right: clamp(2px, 0.45vmin, 4px);
+  --card-border-bottom: clamp(2px, 0.3vmin, 3px);
+  --card-border-left: clamp(3px, 0.55vmin, 5px);
+  --card-inner-space: clamp(0.3rem, 0.9vmin, 0.8rem);
+
+  /* ---------- typography ---------- */
+  --text-sm: clamp(0.95rem, 1vw + 0.35rem, 1.2rem);
+  --text-md: clamp(1.1rem, 1.4vw + 0.45rem, 1.6rem);
+  --text-lg: clamp(1.6rem, 2.8vw + 0.4rem, 2.8rem);
+  --text-xl: clamp(1.4rem, 4vw, 3.5rem);
+  --text-huge: clamp(4rem, 22vmin, 20rem);
+
+  /* ---------- layout ---------- */
+  --content-width: min(100%, 90rem);
+  --modal-width: min(100vw, 100rem);
+  --modal-max-height: min(85dvh, 42rem);
+  --columns: 6;
+
+  /* ---------- spacing ---------- */
+  --space-1: clamp(0.5rem, 1vmin, 0.75rem);
+  --space-2: clamp(0.75rem, 1.5vmin, 1rem);
+  --space-3: clamp(1.25rem, 3vmin, 3rem);
+  --space-4: clamp(2rem, 8vmin, 5rem);
+
+  /* ---------- colors ---------- */
+  --bg: hsl(234, 75%, 16%);
+  --card-bg: hsl(54, 75%, 18%);
+  --button-bg: hsla(234, 75%, 56%, 0.3);
+  --button-shadow: hsla(234, 74%, 35%, 0.5);
+  --text: hsl(51, 30%, 73%);
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background-color: var(--bg);
+  color: var(--text);
+  user-select: none;
+  font-family: "Emilys Candy", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+main {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+}
+
+.tutorial_container {
+  width: var(--content-width);
+  max-width: var(--modal-width);
+  min-height: min(85dvh, 42rem);
+  padding: clamp(1rem, 3vw, 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.tutorial_text {
+  width: 100%;
+  max-width: 70ch;
+  font-size: var(--text-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: justify;
+}
+
+.tutorial_text > section > div {
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 var(--space-2) 0;
+  font-size: var(--text-lg);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+h3 {
+  margin: 0 0 var(--space-4) 0;
+  font-size: var(--text-sm);
+  opacity: 0.3;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+span {
+  font-size: var(--text-lg);
+  color: hsla(117, 75%, 56%, 1);
+}
+
+.board_size_buttons_container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.board_size_buttons_container > button {
+  min-height: 44px;
+  min-width: min(11rem, 100%);
+  padding: clamp(0.65rem, 1.1vmin, 0.9rem) clamp(1rem, 4vmin, 2rem);
+  border: 0;
+  border-radius: 0.6em;
+
+  font-family: inherit;
+  font-size: var(--text-xl);
+  line-height: 1;
+  color: var(--text);
+
+  background-color: var(--button-bg);
+  cursor: pointer;
+
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.board_size_buttons_container > button:hover {
+  background-color: hsla(234, 75%, 56%, 1);
+  box-shadow: 0 0.3em 0.5em var(--button-shadow);
+}
+
+.board_size_buttons_container > button:active {
+  background-color: hsla(234, 75%, 56%, 0.7);
+  transform: translateY(0.1em);
+}
+
+.game_wrapper {
+  width: min(100%, 90rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: var(--space-2);
+}
+
+.header_game_container {
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-3);
+  flex-wrap: wrap;
+  font-size: var(--text-lg);
+  color: var(--text);
+}
+
+.game_container {
+  width: min(100%, 48rem);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  gap: var(--space-2);
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  background: var(--card-bg);
+  border-width: var(--card-border-top)
+    var(--card-border-right)
+    var(--card-border-bottom)
+    var(--card-border-left);
+  border-radius: 95% 4% 92% 5%/4% 95% 6% 95%;
+  transform: rotate(2deg);
+  color: var(--text);
+}
+
+.oddcardinner {
+  margin: var(--card-inner-space);
+  transform: rotate(-2deg);
+}
+
+
+/* ---------- small screens ---------- */
+@media (max-width: 600px) {
+  .tutorial_container {
+    justify-content: flex-start;
+    min-height: auto;
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
+  }
+
+  .board_size_buttons_container {
+    flex-direction: column;
+  }
+
+  .board_size_buttons_container > button {
+    width: 100%;
+    max-width: 18rem;
+  }
 }
