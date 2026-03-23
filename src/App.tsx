@@ -1,5 +1,6 @@
 import "./App.css";
 import { CardDesign } from "./CardDesign";
+import { FinishScreen } from "./FinishScreen";
 import { useCardsLogic } from "./useCardsLogic";
 
 export default function App() {
@@ -10,14 +11,13 @@ export default function App() {
     currentCardPairIndices,
     playerMovesCount,
     secondsElapsed,
-    selectedBoardSize,
+    result,
+    maxMoves,
+    totalSeconds,
     setPageAtPlay,
-    set4x4BoardSize,
-    set6x6BoardSize,
-    set8x8BoardSize,
-    set4x4Board,
-    set6x6Board,
-    set8x8Board,
+    set4x4Game,
+    set6x6Game,
+    set8x8Game,
     flipUpCard,
     reset,
   } = useCardsLogic();
@@ -41,15 +41,15 @@ export default function App() {
               </p>
               <div>
                 <p>
-                  <span>4×4</span> grid → <span>60</span> seconds & maximum{" "}
+                  <span>4×4</span> grid → <span>60</span> seconds &{" "}
                   <span>19</span> moves
                 </p>
                 <p>
-                  <span>6×6</span> grid → <span>140</span> seconds & maximum{" "}
+                  <span>6×6</span> grid → <span>140</span> seconds &{" "}
                   <span>39</span> moves
                 </p>
                 <p>
-                  <span>8×8</span> grid → <span>220</span> seconds & maximum{" "}
+                  <span>8×8</span> grid → <span>220</span> seconds &{" "}
                   <span>67</span> moves
                 </p>
               </div>
@@ -67,8 +67,7 @@ export default function App() {
             <button
               onClick={() => {
                 setPageAtPlay();
-                set4x4Board();
-                set4x4BoardSize();
+                set4x4Game();
               }}
             >
               4x4
@@ -76,8 +75,7 @@ export default function App() {
             <button
               onClick={() => {
                 setPageAtPlay();
-                set6x6Board();
-                set6x6BoardSize();
+                set6x6Game();
               }}
             >
               6x6
@@ -85,8 +83,7 @@ export default function App() {
             <button
               onClick={() => {
                 setPageAtPlay();
-                set8x8Board();
-                set8x8BoardSize();
+                set8x8Game();
               }}
             >
               8x8
@@ -117,6 +114,16 @@ export default function App() {
             })}
           </section>
         </section>
+      )}
+      {page === "finish" && (
+        <FinishScreen
+          result={result}
+          playerMovesCount={playerMovesCount}
+          maxMoves={maxMoves}
+          secondsElapsed={secondsElapsed}
+          totalSeconds={totalSeconds}
+          handleReset={() => reset()}
+        />
       )}
     </main>
   );
