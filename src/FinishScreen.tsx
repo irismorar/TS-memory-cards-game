@@ -1,21 +1,69 @@
 type Props = {
-  result: "win" | "lose" | null;
+  page: "tutorial" | "play" | "win" | "lose";
   playerMovesCount: number;
   maxMoves: number;
   secondsElapsed: number;
-  totalSeconds: number;
+  maxSeconds: number;
   handleReset: () => void;
 };
 
+export function FinishScreen({
+  page,
+  playerMovesCount,
+  maxMoves,
+  secondsElapsed,
+  maxSeconds,
+  handleReset,
+}: Props) {
+  const funnyLine = getFunnyLine(
+    page,
+    secondsElapsed,
+    maxSeconds,
+    playerMovesCount,
+    maxMoves,
+  );
+
+  const title = getTitle(page);
+  const badge = getBadge(page);
+  const isWin = page === "win";
+
+  return (
+    <section className={`finish_container ${isWin ? "win" : ""}`}>
+      {page === "win" && (
+        <section>
+          <div className="winning_title">{title}</div>
+          <div className="winning_badge">{badge}</div>
+          <div className="logo_finish_screen">🌟🌟🌟</div>
+          <div className="funny_line_finish_screen">{funnyLine}</div>
+          <button className="reset_button" onClick={handleReset}>
+            PLAY AGAIN
+          </button>
+        </section>
+      )}
+      {page === "lose" && (
+        <section>
+          <div className="losing_title">{title}</div>
+          <div className="losing_badge">{badge}</div>
+          <div className="logo_finish_screen">💀💀💀</div>
+          <div className="funny_line_finish_screen">{funnyLine}</div>
+          <button className="reset_button" onClick={handleReset}>
+            PLAY AGAIN
+          </button>
+        </section>
+      )}
+    </section>
+  );
+}
+
 const getFunnyLine = (
-  result: "win" | "lose" | null,
+  page: "tutorial" | "play" | "win" | "lose",
   secondsElapsed: number,
-  totalSeconds: number,
+  maxSeconds: number,
   playerMovesCount: number,
   maxMoves: number,
 ) => {
-  if (result === "win") {
-    const timeRatio = secondsElapsed / totalSeconds;
+  if (page === "win") {
+    const timeRatio = secondsElapsed / maxSeconds;
     const moveRatio = playerMovesCount / maxMoves;
 
     if (timeRatio < 0.45 && moveRatio < 0.7) {
@@ -29,7 +77,7 @@ const getFunnyLine = (
     return "Your brain just did a backflip and landed perfectly.";
   }
 
-  const ranOutOfTime = secondsElapsed > totalSeconds;
+  const ranOutOfTime = secondsElapsed > maxSeconds;
   const ranOutOfMoves = playerMovesCount > maxMoves;
 
   if (ranOutOfTime && ranOutOfMoves) {
@@ -47,58 +95,10 @@ const getFunnyLine = (
   return "The cards won this round, but they still look nervous about the rematch.";
 };
 
-function getTitle(result: "win" | "lose" | null) {
-  return result === "win" ? "YOU HAVE ASCENDED ✨" : "EMOTIONAL DAMAGE 💀";
+function getTitle(page: "tutorial" | "play" | "win" | "lose") {
+  return page === "win" ? "YOU HAVE ASCENDED ✨" : "EMOTIONAL DAMAGE 💀";
 }
 
-function getBadge(result: "win" | "lose" | null) {
-  return result === "win" ? "Memory God Mode" : "Certified Card Victim";
-}
-
-export function FinishScreen({
-  result,
-  playerMovesCount,
-  maxMoves,
-  secondsElapsed,
-  totalSeconds,
-  handleReset,
-}: Props) {
-  const funnyLine = getFunnyLine(
-    result,
-    secondsElapsed,
-    totalSeconds,
-    playerMovesCount,
-    maxMoves,
-  );
-
-  const title = getTitle(result);
-  const badge = getBadge(result);
-  const isWin = result === "win";
-
-  return (
-    <section className={`finish_container ${isWin ? "win" : ""}`}>
-      {isWin && (
-        <section>
-          <div className="winning_title">{title}</div>
-          <div className="winning_badge">{badge}</div>
-          <div className="logo_finish_screen">🌟🌟🌟</div>
-          <div className="funny_line_finish_screen">{funnyLine}</div>
-          <button className="reset_button" onClick={handleReset}>
-            PLAY AGAIN
-          </button>
-        </section>
-      )}
-      {!isWin && (
-        <section>
-          <div className="losing_title">{title}</div>
-          <div className="losing_badge">{badge}</div>
-          <div className="logo_finish_screen">💀💀💀</div>
-          <div className="funny_line_finish_screen">{funnyLine}</div>
-          <button className="reset_button" onClick={handleReset}>
-            PLAY AGAIN
-          </button>
-        </section>
-      )}
-    </section>
-  );
+function getBadge(page: "tutorial" | "play" | "win" | "lose") {
+  return page === "win" ? "Memory God Mode" : "Certified Card Victim";
 }

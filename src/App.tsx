@@ -11,9 +11,8 @@ export default function App() {
     currentCardPairIndices,
     playerMovesCount,
     secondsElapsed,
-    result,
     maxMoves,
-    totalSeconds,
+    maxSeconds,
     setPageAtPlay,
     set4x4Game,
     set6x6Game,
@@ -115,16 +114,17 @@ export default function App() {
           </section>
         </section>
       )}
-      {page === "finish" && (
-        <FinishScreen
-          result={result}
-          playerMovesCount={playerMovesCount}
-          maxMoves={maxMoves}
-          secondsElapsed={secondsElapsed}
-          totalSeconds={totalSeconds}
-          handleReset={() => reset()}
-        />
-      )}
+      {page === "lose" ||
+        (page === "win" && (
+          <FinishScreen
+            page={page}
+            playerMovesCount={playerMovesCount}
+            maxMoves={maxMoves}
+            secondsElapsed={secondsElapsed}
+            maxSeconds={maxSeconds}
+            handleReset={() => reset()}
+          />
+        ))}
     </main>
   );
 }

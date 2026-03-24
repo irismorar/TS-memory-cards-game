@@ -85,7 +85,9 @@ const shuffleCards = (cardSymbols: string[]) => {
 };
 
 export function useCardsLogic() {
-  const [page, setPage] = useState<"tutorial" | "play" | "finish">("tutorial");
+  const [page, setPage] = useState<"tutorial" | "play" | "win" | "lose">(
+    "tutorial",
+  );
   const [selectedBoardSize, setSelectedBoardSize] = useState<
     "4x4" | "6x6" | "8x8" | null
   >(null);
@@ -98,7 +100,6 @@ export function useCardsLogic() {
   >([]);
   const [playerMovesCount, setPlayerMovesCount] = useState(0);
   const [secondsElapsed, setSecondsElapsed] = useState(0);
-  const [result, setResult] = useState<"win" | "lose" | null>(null);
   const timerRef = useRef<number | null>(null);
 
   const maxMoves =
@@ -110,7 +111,7 @@ export function useCardsLogic() {
           ? MAX_PLAYER_MOVES_8x8
           : 0;
 
-  const totalSeconds =
+  const maxSeconds =
     selectedBoardSize === "4x4"
       ? TOTAL_SECONDS_4x4
       : selectedBoardSize === "6x6"
@@ -144,50 +145,61 @@ export function useCardsLogic() {
     setPlayerMovesCount(0);
   }, []);
 
-  useEffect(() => {
-    timerRef.current = setInterval(() => {
-      setSecondsElapsed((prev) => {
-        return prev + 1;
-      });
-    }, 1000);
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, []);
+  // useEffect(() => {
+  //   timerRef.current = setInterval(() => {
+  //     setSecondsElapsed((prev) => {
+  //       return prev + 1;
+  //     });
+  //     if (secondsElapsed === maxSeconds) {
+  //       setPage("lose");
+  //     }
+  //   }, 1000);
+  //   return () => {
+  //     if (timerRef.current) {
+  //       clearInterval(timerRef.current);
+  //     }
+  //   };
+  // }, [secondsElapsed, maxSeconds]);
 
   const flipUpCard = (cardIndex: number) => {
-    if (page !== "play") {
+    if (currentCardPairIndices.length >= 2) {
       return;
     }
-    if (currentCardPairIndices.length < 2) {
-      setCurrentCardPairIndices((prev) => {
-        return [...prev, cardIndex];
-      });
+
+    const isFirstCardInPair = currentCardPairIndices.length === 0;
+    if (isFirstCardInPair) {
+      setCurrentCardPairIndices([cardIndex]);
+      return;
     }
-    if (currentCardPairIndices.length === 1) {
-      setPlayerMovesCount((prev) => {
-        return prev + 1;
+    setCurrentCardPairIndices((prev) => [...prev, cardIndex]);
+
+    const firstCardIndex = currentCardPairIndices[0];
+    const secondCardIndex = cardIndex;
+    const firstCard = board[firstCardIndex];
+    const secondCard = board[secondCardIndex];
+
+    setPlayerMovesCount((prev) => prev + 1);
+
+    if (firstCard === secondCard) {
+      setCurrentCardPairIndices([]);
+      setFlippedUpCardIndices((prev) => {
+        return [...prev, firstCardIndex, secondCardIndex];
       });
-      const firstCardIndex = currentCardPairIndices[0];
-      const secondCardIndex = cardIndex;
-      const firstCard = board[firstCardIndex];
-      const secondCard = board[secondCardIndex];
-      if (firstCard === secondCard) {
-        setFlippedUpCardIndices((prev) => {
-          const updated = [...prev, firstCardIndex, secondCardIndex];
-          if (updated.length === board.length) {
-            setPage("finish");
-          }
-          return updated;
-        });
-        setCurrentCardPairIndices([]);
-      } else {
-        setTimeout(() => {
-          setCurrentCardPairIndices([]);
-        }, 700);
+
+      const hasPlayerLostByTooManyMoves = playerMovesCount >= maxMoves;
+      if (hasPlayerLostByTooManyMoves) {
+        setPage("lose");
+        return;
       }
+
+      const isLastPair = flippedUpCardIndices.length === board.length - 1;
+      if (isLastPair) {
+        setPage("win");
+      }
+    } else {
+      setTimeout(() => {
+        setCurrentCardPairIndices([]);
+      }, 700);
     }
   };
 
@@ -199,41 +211,6 @@ export function useCardsLogic() {
     setPlayerMovesCount(0);
   }, []);
 
-  useEffect(() => {
-    if (page !== "play") {
-      return;
-    }
-    if (board.length === 0) {
-      return;
-    }
-    if (
-      flippedUpCardIndices.length === board.length &&
-      secondsElapsed <= totalSeconds &&
-      playerMovesCount <= maxMoves
-    ) {
-      setResult("win");
-      setPage("finish");
-    }
-  }, [
-    board.length,
-    flippedUpCardIndices.length,
-    maxMoves,
-    page,
-    playerMovesCount,
-    secondsElapsed,
-    totalSeconds,
-  ]);
-
-  useEffect(() => {
-    if (page !== "play") {
-      return;
-    }
-    if (secondsElapsed > totalSeconds || playerMovesCount > maxMoves) {
-      setResult("lose");
-      setPage("finish");
-    }
-  }, [maxMoves, page, playerMovesCount, secondsElapsed, totalSeconds]);
-
   return {
     page,
     board,
@@ -241,9 +218,8 @@ export function useCardsLogic() {
     currentCardPairIndices,
     playerMovesCount,
     secondsElapsed,
-    result,
     maxMoves,
-    totalSeconds,
+    maxSeconds,
     setPageAtPlay,
     set4x4Game,
     set6x6Game,
