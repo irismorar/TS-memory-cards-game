@@ -145,55 +145,58 @@ export function useCardsLogic() {
     setPlayerMovesCount(0);
   }, []);
 
-  // useEffect(() => {
-  //   timerRef.current = setInterval(() => {
-  //     setSecondsElapsed((prev) => {
-  //       return prev + 1;
-  //     });
-  //     if (secondsElapsed === maxSeconds) {
-  //       setPage("lose");
-  //     }
-  //   }, 1000);
-  //   return () => {
-  //     if (timerRef.current) {
-  //       clearInterval(timerRef.current);
-  //     }
-  //   };
-  // }, [secondsElapsed, maxSeconds]);
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      setSecondsElapsed((prev) => {
+        const next = prev + 1;
+
+        if (next >= maxSeconds) {
+          if (timerRef.current) {
+            clearInterval(timerRef.current);
+          }
+          setPage("lose");
+        }
+        return next;
+      });
+    }, 1000);
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [maxSeconds]);
 
   const flipUpCard = (cardIndex: number) => {
-    if (currentCardPairIndices.length >= 2) {
-      return;
-    }
+    if (currentCardPairIndices.length >= 2) return;
+    if (currentCardPairIndices.includes(cardIndex)) return;
+    if (flippedUpCardIndices.includes(cardIndex)) return;
 
-    const isFirstCardInPair = currentCardPairIndices.length === 0;
-    if (isFirstCardInPair) {
+    if (currentCardPairIndices.length === 0) {
       setCurrentCardPairIndices([cardIndex]);
       return;
     }
-    setCurrentCardPairIndices((prev) => [...prev, cardIndex]);
 
     const firstCardIndex = currentCardPairIndices[0];
     const secondCardIndex = cardIndex;
     const firstCard = board[firstCardIndex];
     const secondCard = board[secondCardIndex];
+    const nextMovesCount = playerMovesCount + 1;
+    const currentPair = [firstCardIndex, secondCardIndex];
 
-    setPlayerMovesCount((prev) => prev + 1);
+    setCurrentCardPairIndices(currentPair);
+    setPlayerMovesCount(nextMovesCount);
+
+    if (nextMovesCount >= maxMoves) {
+      setPage("lose");
+      return;
+    }
 
     if (firstCard === secondCard) {
+      const nextFlippedUp = [...flippedUpCardIndices, ...currentPair];
+      setFlippedUpCardIndices(nextFlippedUp);
       setCurrentCardPairIndices([]);
-      setFlippedUpCardIndices((prev) => {
-        return [...prev, firstCardIndex, secondCardIndex];
-      });
 
-      const hasPlayerLostByTooManyMoves = playerMovesCount >= maxMoves;
-      if (hasPlayerLostByTooManyMoves) {
-        setPage("lose");
-        return;
-      }
-
-      const isLastPair = flippedUpCardIndices.length === board.length - 1;
-      if (isLastPair) {
+      if (nextFlippedUp.length === board.length) {
         setPage("win");
       }
     } else {
@@ -202,6 +205,53 @@ export function useCardsLogic() {
       }, 700);
     }
   };
+
+  // const flipUpCard = (cardIndex: number) => {
+  //   if (currentCardPairIndices.length >= 2) {
+  //     return;
+  //   }
+
+  //   const isFirstCardInPair = currentCardPairIndices.length === 0;
+  //   if (isFirstCardInPair) {
+  //     setCurrentCardPairIndices([cardIndex]);
+  //     console.log("this is the first card in pair");
+  //     return;
+  //   }
+  //   setCurrentCardPairIndices((prev) => [...prev, cardIndex]);
+
+  //   const firstCardIndex = currentCardPairIndices[0];
+  //   const secondCardIndex = cardIndex;
+  //   const firstCard = board[firstCardIndex];
+  //   const secondCard = board[secondCardIndex];
+
+  //   setPlayerMovesCount((prev) => prev + 1);
+
+  //   if (firstCard === secondCard) {
+  //     setCurrentCardPairIndices([]);
+  //     console.log("we have a new pair");
+  //     setFlippedUpCardIndices((prev) => {
+  //       return [...prev, firstCardIndex, secondCardIndex];
+  //     });
+
+  //     //it never takes this
+  //     const hasPlayerLostByTooManyMoves = playerMovesCount >= maxMoves;
+  //     if (hasPlayerLostByTooManyMoves) {
+  //       setPage("lose");
+  //       return;
+  //     }
+
+  //     //it never takes this
+  //     const isLastPair = flippedUpCardIndices.length === board.length - 1;
+  //     if (isLastPair) {
+  //       console.log("this is the last pair of cards");
+  //       setPage("win");
+  //     }
+  //   } else {
+  //     setTimeout(() => {
+  //       setCurrentCardPairIndices([]);
+  //     }, 700);
+  //   }
+  // };
 
   const reset = useCallback(() => {
     setPage("tutorial");

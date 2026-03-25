@@ -22,13 +22,11 @@ export function FinishScreen({
     playerMovesCount,
     maxMoves,
   );
-
   const title = getTitle(page);
   const badge = getBadge(page);
-  const isWin = page === "win";
 
   return (
-    <section className={`finish_container ${isWin ? "win" : ""}`}>
+    <section className={`finish_container ${page === "win" ? "win" : ""}`}>
       {page === "win" && (
         <section>
           <div className="winning_title">{title}</div>
@@ -96,9 +94,19 @@ const getFunnyLine = (
 };
 
 function getTitle(page: "tutorial" | "play" | "win" | "lose") {
-  return page === "win" ? "YOU HAVE ASCENDED ✨" : "EMOTIONAL DAMAGE 💀";
+  if (page === "win") {
+    return "YOU HAVE ASCENDED ✨";
+  }
+  if (page === "lose") {
+    return "EMOTIONAL DAMAGE 💀";
+  }
 }
 
 function getBadge(page: "tutorial" | "play" | "win" | "lose") {
-  return page === "win" ? "Memory God Mode" : "Certified Card Victim";
+  if (page === "win") {
+    return "Memory God Mode";
+  }
+  if (page === "lose") {
+    return "Certified Card Victim";
+  }
 }
