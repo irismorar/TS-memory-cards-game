@@ -6,7 +6,6 @@
 
 :root {
   /* ---------- sizing system ---------- */
-  --card-size: clamp(4rem, 11vmin, 8rem);
   --card-border-top: clamp(2px, 0.3vmin, 3px);
   --card-border-right: clamp(2px, 0.45vmin, 4px);
   --card-border-bottom: clamp(2px, 0.3vmin, 3px);
@@ -18,24 +17,18 @@
   --text-md: clamp(1rem, 0.85rem + 1vw, 1.6rem);
   --text-lg: clamp(1.4rem, 1rem + 2vw, 2.8rem);
   --text-xl: clamp(1.2rem, 0.8rem + 3vw, 3.5rem);
-  --text-huge: clamp(3rem, 12vmin, 10rem);
 
   /* ---------- layout ---------- */
   --content-width: min(100%, 90rem);
   --modal-width: min(100%, 100rem);
-  --modal-max-height: min(85dvh, 42rem);
-  --columns: 6;
 
   /* ---------- spacing ---------- */
-  --space-1: clamp(0.4rem, 0.25rem + 0.8vmin, 0.75rem);
   --space-2: clamp(0.6rem, 0.4rem + 1vmin, 1rem);
   --space-3: clamp(1rem, 0.6rem + 2vmin, 3rem);
   --space-4: clamp(1.5rem, 0.8rem + 4vmin, 5rem);
 
   /* ---------- radius ---------- */
   --radius-sm: clamp(0.6rem, 0.4rem + 0.7vmin, 1rem);
-  --radius-md: clamp(1rem, 0.6rem + 1.2vmin, 1.5rem);
-  --radius-lg: clamp(1.2rem, 0.8rem + 1.8vmin, 1.75rem);
 }
 
 html,
@@ -46,8 +39,8 @@ body {
 body {
   margin: 0;
   min-height: 100dvh;
-  background-color: hsl(234, 75%, 16%);
-  color: hsl(51, 30%, 73%);
+  background-color: #0a1047;
+  color: #cfc9a5;
   user-select: none;
   font-family: "Emilys Candy", serif;
   font-weight: 400;
@@ -112,7 +105,7 @@ p {
 
 span {
   font-size: var(--text-lg);
-  color: hsla(117, 75%, 56%, 1);
+  color: #43e33b;
   animation: popLogo 1.2s ease-in-out 2;
 }
 
@@ -137,7 +130,7 @@ span {
   font-family: inherit;
   font-size: var(--text-xl);
   line-height: 1;
-  color: hsl(51, 30%, 73%);;
+  color: #cfc9a5;
   background-color: hsla(234, 75%, 56%, 0.3);
   cursor: pointer;
   transition:
@@ -174,7 +167,7 @@ span {
   margin-bottom: var(--space-3);
   flex-wrap: wrap;
   font-size: var(--text-lg);
-  color: hsl(51, 30%, 73%);
+  color: #cfc9a5;
   text-align: center;
 }
 
@@ -182,8 +175,19 @@ span {
   width: min(100%, 48rem);
   margin-inline: auto;
   display: grid;
-  grid-template-columns: repeat(var(--columns), 1fr);
   gap: var(--space-2);
+}
+
+.game_container,.grid_4x4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.game_container,.grid_6x6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.game_container,.grid_8x8 {
+  grid-template-columns: repeat(8, 1fr);
 }
 
 .card {
@@ -193,7 +197,7 @@ span {
   width: 100%;
   aspect-ratio: 1 / 1;
   font-size: clamp(1.2rem, 0.8rem + 2.5vw, 3rem);
-  background: hsl(54, 75%, 18%);
+  background: #50490b;
   border-style: solid;
   border-width: var(--card-border-top)
     var(--card-border-right)
@@ -201,7 +205,7 @@ span {
     var(--card-border-left);
   border-radius: 95% 4% 92% 5% / 4% 95% 6% 95%;
   transform: rotate(2deg);
-  color: hsl(51, 30%, 73%);
+  color: #cfc9a5;
 }
 
 .oddcardinner {
@@ -273,7 +277,7 @@ span {
 
 .winning_badge {
   background: linear-gradient(135deg, #fde68a, #f9a8d4);
-  color: #3f2a00;
+  color: #0974b2;
 }
 
 .losing_badge {
@@ -299,11 +303,18 @@ span {
   font-size: clamp(1rem, 0.85rem + 0.9vw, 1.35rem);
   line-height: clamp(1.55, 1.5 + 0.1vw, 1.7);
   border-radius: clamp(1rem, 0.8rem + 1vw, 1.75rem);
-  color: #ffffff;
   background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.funny_line_finish_screen.winning {
+  color: #83c3e8;
+}
+
+.funny_line_finish_screen.losing {
+  color: #fff;
 }
 
 .reset_button {
@@ -315,11 +326,11 @@ span {
   width: min(82%, 20rem);
   border: none;
   border-radius: clamp(1rem, 0.8rem + 0.8vw, 1.25rem);
+  font-family: inherit;
   font-size: clamp(0.95rem, 0.85rem + 0.5vw, 1.15rem);
   font-weight: 800;
   letter-spacing: 0.05em;
   cursor: pointer;
-  background: linear-gradient(135deg, #111827, #374151);
   color: white;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
   transition:
@@ -336,6 +347,14 @@ span {
 
 .reset_button:active {
   transform: translateY(0) scale(0.98);
+}
+
+.reset_button.winning_button {
+  background: linear-gradient(135deg, #430240, #c51ebc);
+}
+
+.reset_button.losing_button {
+  background: linear-gradient(135deg, #111827, #374151);
 }
 
 @keyframes floatWin {

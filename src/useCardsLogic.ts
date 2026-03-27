@@ -146,6 +146,9 @@ export function useCardsLogic() {
   }, []);
 
   useEffect(() => {
+    if (page !== "play") {
+      return;
+    }
     timerRef.current = setInterval(() => {
       setSecondsElapsed((prev) => {
         const next = prev + 1;
@@ -164,7 +167,7 @@ export function useCardsLogic() {
         clearInterval(timerRef.current);
       }
     };
-  }, [maxSeconds]);
+  }, [maxSeconds, page]);
 
   const flipUpCard = (cardIndex: number) => {
     if (currentCardPairIndices.length >= 2) return;
@@ -268,6 +271,7 @@ export function useCardsLogic() {
     currentCardPairIndices,
     playerMovesCount,
     secondsElapsed,
+    selectedBoardSize,
     maxMoves,
     maxSeconds,
     setPageAtPlay,

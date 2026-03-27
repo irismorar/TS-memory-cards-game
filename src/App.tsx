@@ -11,6 +11,7 @@ export default function App() {
     currentCardPairIndices,
     playerMovesCount,
     secondsElapsed,
+    selectedBoardSize,
     maxMoves,
     maxSeconds,
     setPageAtPlay,
@@ -22,7 +23,12 @@ export default function App() {
   } = useCardsLogic();
 
   return (
-    <main>
+    <main
+      style={{
+        backgroundColor:
+          page === "win" ? "hsl(38, 100%, 74%)" : "hsl(234, 75%, 16%)",
+      }}
+    >
       {page === "tutorial" && (
         <section className="tutorial_container">
           <section className="tutorial_text">
@@ -95,7 +101,7 @@ export default function App() {
           <div className="header_game_container">
             {secondsElapsed} / {playerMovesCount}
           </div>
-          <section className="game_container">
+          <section className={`game_container grid_${selectedBoardSize}`}>
             {board.map((currentCardSymbol, index) => {
               return (
                 <CardDesign
