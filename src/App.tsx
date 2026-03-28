@@ -46,7 +46,7 @@ export default function App() {
               </p>
               <div>
                 <p>
-                  <span>4×4</span> grid → <span>60</span> seconds &{" "}
+                  <span>4×4</span> grid → <span>45</span> seconds &{" "}
                   <span>19</span> moves
                 </p>
                 <p>
@@ -55,7 +55,7 @@ export default function App() {
                 </p>
                 <p>
                   <span>8×8</span> grid → <span>220</span> seconds &{" "}
-                  <span>67</span> moves
+                  <span>69</span> moves
                 </p>
               </div>
               <p>
@@ -120,17 +120,16 @@ export default function App() {
           </section>
         </section>
       )}
-      {page === "lose" ||
-        (page === "win" && (
-          <FinishScreen
-            page={page}
-            playerMovesCount={playerMovesCount}
-            maxMoves={maxMoves}
-            secondsElapsed={secondsElapsed}
-            maxSeconds={maxSeconds}
-            handleReset={() => reset()}
-          />
-        ))}
+      {(page === "lose" || page === "win") && (
+        <FinishScreen
+          page={page}
+          playerMovesCount={playerMovesCount}
+          maxMoves={maxMoves}
+          secondsElapsed={secondsElapsed}
+          maxSeconds={maxSeconds}
+          handleReset={() => reset()}
+        />
+      )}
     </main>
   );
 }

@@ -1,6 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Emilys+Candy&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Emilys+Candy&display=swap");
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -178,15 +180,15 @@ span {
   gap: var(--space-2);
 }
 
-.game_container,.grid_4x4 {
+.game_container.grid_4x4 {
   grid-template-columns: repeat(4, 1fr);
 }
 
-.game_container,.grid_6x6 {
+.game_container.grid_6x6 {
   grid-template-columns: repeat(6, 1fr);
 }
 
-.game_container,.grid_8x8 {
+.game_container.grid_8x8 {
   grid-template-columns: repeat(8, 1fr);
 }
 
@@ -199,10 +201,8 @@ span {
   font-size: clamp(1.2rem, 0.8rem + 2.5vw, 3rem);
   background: #50490b;
   border-style: solid;
-  border-width: var(--card-border-top)
-    var(--card-border-right)
-    var(--card-border-bottom)
-    var(--card-border-left);
+  border-width: var(--card-border-top) var(--card-border-right)
+    var(--card-border-bottom) var(--card-border-left);
   border-radius: 95% 4% 92% 5% / 4% 95% 6% 95%;
   transform: rotate(2deg);
   color: #cfc9a5;
