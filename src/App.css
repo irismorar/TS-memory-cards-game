@@ -27,7 +27,7 @@
   /* ---------- spacing ---------- */
   --space-2: clamp(0.6rem, 0.4rem + 1vmin, 1rem);
   --space-3: clamp(1rem, 0.6rem + 2vmin, 3rem);
-  --space-4: clamp(1.5rem, 0.8rem + 4vmin, 5rem);
+  --space-4: clamp(2rem, 1rem + 5vmin, 6rem);
 
   /* ---------- radius ---------- */
   --radius-sm: clamp(0.6rem, 0.4rem + 0.7vmin, 1rem);
@@ -41,7 +41,7 @@ body {
 body {
   margin: 0;
   min-height: 100dvh;
-  background-color: #0a1047;
+  background-color: #121251;
   color: #cfc9a5;
   user-select: none;
   font-family: "Emilys Candy", serif;
@@ -54,7 +54,6 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-3);
 }
 
 .tutorial_container {
@@ -108,8 +107,8 @@ p {
 span {
   font-size: var(--text-lg);
   color: #43e33b;
-  animation: popLogo 1.2s ease-in-out 2;
 }
+
 
 .board_size_buttons_container {
   width: 100%;
@@ -152,44 +151,76 @@ span {
 }
 
 .game_wrapper {
-  width: min(100%, 90rem);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: var(--space-2);
+  gap: var(--space-2);
 }
 
 .header_game_container {
-  width: fit-content;
-  max-width: 100%;
+  width: min(100%, 48rem);
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: var(--space-3);
-  flex-wrap: wrap;
-  font-size: var(--text-lg);
+  justify-content: space-between;
+  font-size: var(--text-md);
   color: #cfc9a5;
   text-align: center;
 }
 
+.reset_game {
+  font-size: var(--text-md);
+  font-family: inherit;
+  flex: 1;
+  text-align: left;
+  background-color: transparent;
+  border: none;
+  color: hsla(51, 30%, 73%, .4);
+  transition:
+    transform 0.1s ease-out,
+    color 0.3s ease;
+}
+
+.reset_game:hover {
+  color: #43e33b;
+  cursor: pointer;
+}
+
+.reset_game:active {
+  transform: scale(.95);
+}
+
+.header_game_container>div:nth-child(2) {
+  flex: 2;
+}
+
+.header_game_container>div:last-child {
+  flex: 1;
+  text-align: right;
+}
+
 .game_container {
-  width: min(100%, 48rem);
   margin-inline: auto;
   display: grid;
-  gap: var(--space-2);
+  aspect-ratio: 1 / 1;
 }
 
 .game_container.grid_4x4 {
   grid-template-columns: repeat(4, 1fr);
+  width: min(80vw, 640px);
+  gap: 14px;
 }
 
 .game_container.grid_6x6 {
   grid-template-columns: repeat(6, 1fr);
+  width: min(82vw, 700px);
+  gap: 10px;
 }
 
 .game_container.grid_8x8 {
   grid-template-columns: repeat(8, 1fr);
+  width: min(86vw, 760px);
+  gap: 8px;
 }
 
 .card {
@@ -198,8 +229,8 @@ span {
   justify-content: center;
   width: 100%;
   aspect-ratio: 1 / 1;
-  font-size: clamp(1.2rem, 0.8rem + 2.5vw, 3rem);
-  background: #50490b;
+  font-size: clamp(1rem, 0.8rem + 2.5vw, 3rem);
+  background: #10470A;
   border-style: solid;
   border-width: var(--card-border-top) var(--card-border-right)
     var(--card-border-bottom) var(--card-border-left);
@@ -396,5 +427,23 @@ span {
   }
   100% {
     transform: scale(1.08) rotate(2deg);
+  }
+}
+
+
+@media (max-width: 768px) {
+  .game_container.grid_4x4 {
+    width: min(92vw, 500px);
+    gap: 10px;
+  }
+
+  .game_container.grid_6x6 {
+    width: min(94vw, 560px);
+    gap: 8px;
+  }
+
+  .game_container.grid_8x8 {
+    width: min(96vw, 620px);
+    gap: 6px;
   }
 }

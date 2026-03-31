@@ -62,7 +62,7 @@ const getFunnyLine = (
 ) => {
   if (page === "win") {
     const timeRatio = secondsElapsed / maxSeconds;
-    const moveRatio = playerMovesCount / maxMoves;
+    const moveRatio = maxMoves / playerMovesCount;
 
     if (timeRatio < 0.45 && moveRatio < 0.7) {
       return "That was suspiciously clean. We are investigating for wizard activity!";
@@ -76,7 +76,7 @@ const getFunnyLine = (
   }
 
   const ranOutOfTime = secondsElapsed >= maxSeconds;
-  const ranOutOfMoves = playerMovesCount >= maxMoves;
+  const ranOutOfMoves = playerMovesCount === 0;
 
   if (ranOutOfTime && ranOutOfMoves) {
     return "The clock booed, the moves vanished, and the cards are now judging you!";

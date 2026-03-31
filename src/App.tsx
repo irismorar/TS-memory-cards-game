@@ -23,12 +23,7 @@ export default function App() {
   } = useCardsLogic();
 
   return (
-    <main
-      style={{
-        backgroundColor:
-          page === "win" ? "hsl(38, 100%, 74%)" : "hsl(234, 75%, 16%)",
-      }}
-    >
+    <main>
       {page === "tutorial" && (
         <section className="tutorial_container">
           <section className="tutorial_text">
@@ -99,7 +94,11 @@ export default function App() {
       {page === "play" && (
         <section className="game_wrapper">
           <div className="header_game_container">
-            {secondsElapsed} / {playerMovesCount}
+            <button className="reset_game" onClick={() => reset()}>
+              RESET
+            </button>
+            <div>{secondsElapsed} s</div>
+            <div>{playerMovesCount}</div>
           </div>
           <section className={`game_container grid_${selectedBoardSize}`}>
             {board.map((currentCardSymbol, index) => {

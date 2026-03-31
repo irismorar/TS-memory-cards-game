@@ -69,7 +69,7 @@ const MAX_PLAYER_MOVES_4x4 = 19;
 const MAX_PLAYER_MOVES_6x6 = 39;
 const MAX_PLAYER_MOVES_8x8 = 69;
 
-const TOTAL_SECONDS_4x4 = 45;
+const TOTAL_SECONDS_4x4 = 9995;
 const TOTAL_SECONDS_6x6 = 140;
 const TOTAL_SECONDS_8x8 = 220;
 
@@ -98,9 +98,8 @@ export function useCardsLogic() {
   const [currentCardPairIndices, setCurrentCardPairIndices] = useState<
     number[]
   >([]);
-  const [playerMovesCount, setPlayerMovesCount] = useState(0);
   const [secondsElapsed, setSecondsElapsed] = useState(0);
-  const timerRef = useRef<number | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const maxMoves =
     selectedBoardSize === "4x4"
@@ -120,6 +119,8 @@ export function useCardsLogic() {
           ? TOTAL_SECONDS_8x8
           : 0;
 
+  const [playerMovesCount, setPlayerMovesCount] = useState(maxMoves);
+
   const setPageAtPlay = useCallback(() => {
     setPage("play");
   }, []);
@@ -128,21 +129,21 @@ export function useCardsLogic() {
     setSelectedBoardSize("4x4");
     setBoard(shuffleCards(CARD_SYMBOLS_4x4));
     setSecondsElapsed(0);
-    setPlayerMovesCount(0);
+    setPlayerMovesCount(MAX_PLAYER_MOVES_4x4);
   }, []);
 
   const set6x6Game = useCallback(() => {
     setSelectedBoardSize("6x6");
     setBoard(shuffleCards(CARD_SYMBOLS_6x6));
     setSecondsElapsed(0);
-    setPlayerMovesCount(0);
+    setPlayerMovesCount(MAX_PLAYER_MOVES_6x6);
   }, []);
 
   const set8x8Game = useCallback(() => {
     setSelectedBoardSize("8x8");
     setBoard(shuffleCards(CARD_SYMBOLS_8x8));
     setSecondsElapsed(0);
-    setPlayerMovesCount(0);
+    setPlayerMovesCount(MAX_PLAYER_MOVES_8x8);
   }, []);
 
   useEffect(() => {
@@ -183,13 +184,13 @@ export function useCardsLogic() {
     const secondCardIndex = cardIndex;
     const firstCard = board[firstCardIndex];
     const secondCard = board[secondCardIndex];
-    const nextMovesCount = playerMovesCount + 1;
+    const nextMovesCount = playerMovesCount - 1;
     const currentPair = [firstCardIndex, secondCardIndex];
 
     setCurrentCardPairIndices(currentPair);
     setPlayerMovesCount(nextMovesCount);
 
-    if (nextMovesCount >= maxMoves) {
+    if (nextMovesCount === 0) {
       setPage("lose");
       return;
     }
@@ -208,53 +209,6 @@ export function useCardsLogic() {
       }, 700);
     }
   };
-
-  // const flipUpCard = (cardIndex: number) => {
-  //   if (currentCardPairIndices.length >= 2) {
-  //     return;
-  //   }
-
-  //   const isFirstCardInPair = currentCardPairIndices.length === 0;
-  //   if (isFirstCardInPair) {
-  //     setCurrentCardPairIndices([cardIndex]);
-  //     console.log("this is the first card in pair");
-  //     return;
-  //   }
-  //   setCurrentCardPairIndices((prev) => [...prev, cardIndex]);
-
-  //   const firstCardIndex = currentCardPairIndices[0];
-  //   const secondCardIndex = cardIndex;
-  //   const firstCard = board[firstCardIndex];
-  //   const secondCard = board[secondCardIndex];
-
-  //   setPlayerMovesCount((prev) => prev + 1);
-
-  //   if (firstCard === secondCard) {
-  //     setCurrentCardPairIndices([]);
-  //     console.log("we have a new pair");
-  //     setFlippedUpCardIndices((prev) => {
-  //       return [...prev, firstCardIndex, secondCardIndex];
-  //     });
-
-  //     //it never takes this
-  //     const hasPlayerLostByTooManyMoves = playerMovesCount >= maxMoves;
-  //     if (hasPlayerLostByTooManyMoves) {
-  //       setPage("lose");
-  //       return;
-  //     }
-
-  //     //it never takes this
-  //     const isLastPair = flippedUpCardIndices.length === board.length - 1;
-  //     if (isLastPair) {
-  //       console.log("this is the last pair of cards");
-  //       setPage("win");
-  //     }
-  //   } else {
-  //     setTimeout(() => {
-  //       setCurrentCardPairIndices([]);
-  //     }, 700);
-  //   }
-  // };
 
   const reset = useCallback(() => {
     setPage("tutorial");
