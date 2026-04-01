@@ -44,8 +44,8 @@ export default function App() {
               </p>
               <div>
                 <p>
-                  <span>4×4</span> → max <span>20</span> moves in{" "}
-                  <span>40</span> s
+                  <span>4×4</span> → max <span>18</span> moves in{" "}
+                  <span>35</span> s
                 </p>
                 <p>
                   <span>6×6</span> → max <span>60</span> moves in{" "}

@@ -65,7 +65,7 @@ const CARD_SYMBOLS_8x8: string[] = [
   "S",
 ];
 
-const MAX_PLAYER_MOVES_4x4 = 20;
+const MAX_PLAYER_MOVES_4x4 = 18;
 const MAX_PLAYER_MOVES_6x6 = 60;
 const MAX_PLAYER_MOVES_8x8 = 135;
 
