@@ -33,8 +33,7 @@
   --radius-sm: clamp(0.6rem, 0.4rem + 0.7vmin, 1rem);
 }
 
-html,
-body {
+html {
   min-height: 100%;
 }
 
@@ -91,11 +90,16 @@ h1 {
   text-align: center;
 }
 
+.mobile_break {
+  display: none;
+}
+
 h3 {
   margin: 0 0 var(--space-4) 0;
   font-size: var(--text-sm);
   opacity: 0.3;
   line-height: 1.2;
+  text-align: center;
 }
 
 p {
@@ -431,7 +435,11 @@ span {
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 760px) {
+  .mobile_break {
+    display: block;
+  }
+
   .game_container.grid_4x4 {
     width: min(92vw, 500px);
     gap: 10px;
@@ -444,6 +452,6 @@ span {
 
   .game_container.grid_8x8 {
     width: min(96vw, 620px);
-    gap: 6px;
+    gap: 3px;
   }
 }

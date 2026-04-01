@@ -27,7 +27,10 @@ export default function App() {
       {page === "tutorial" && (
         <section className="tutorial_container">
           <section className="tutorial_text">
-            <h1>Welcome to the Memory Cards Game</h1>
+            <h1>
+              Welcome to the
+              <br className="mobile_break" /> Memory Cards Game
+            </h1>
             <h3>where your brain gets a workout and your luck gets judged</h3>
             <section>
               <p>
@@ -41,16 +44,16 @@ export default function App() {
               </p>
               <div>
                 <p>
-                  <span>4×4</span> grid → <span>45</span> seconds &{" "}
-                  <span>19</span> moves
+                  <span>4×4</span> → max <span>20</span> moves in{" "}
+                  <span>40</span> s
                 </p>
                 <p>
-                  <span>6×6</span> grid → <span>140</span> seconds &{" "}
-                  <span>39</span> moves
+                  <span>6×6</span> → max <span>60</span> moves in{" "}
+                  <span>120</span> s
                 </p>
                 <p>
-                  <span>8×8</span> grid → <span>220</span> seconds &{" "}
-                  <span>69</span> moves
+                  <span>8×8</span> → max <span>135</span> moves in{" "}
+                  <span>450</span> s
                 </p>
               </div>
               <p>

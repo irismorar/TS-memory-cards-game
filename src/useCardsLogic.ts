@@ -65,13 +65,13 @@ const CARD_SYMBOLS_8x8: string[] = [
   "S",
 ];
 
-const MAX_PLAYER_MOVES_4x4 = 19;
-const MAX_PLAYER_MOVES_6x6 = 39;
-const MAX_PLAYER_MOVES_8x8 = 69;
+const MAX_PLAYER_MOVES_4x4 = 20;
+const MAX_PLAYER_MOVES_6x6 = 60;
+const MAX_PLAYER_MOVES_8x8 = 135;
 
-const TOTAL_SECONDS_4x4 = 9995;
-const TOTAL_SECONDS_6x6 = 140;
-const TOTAL_SECONDS_8x8 = 220;
+const TOTAL_SECONDS_4x4 = 40;
+const TOTAL_SECONDS_6x6 = 120;
+const TOTAL_SECONDS_8x8 = 450;
 
 const shuffleCards = (cardSymbols: string[]) => {
   const shuffleCardsValue = [...cardSymbols.concat(cardSymbols)];
