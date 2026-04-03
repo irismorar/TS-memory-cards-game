@@ -69,7 +69,7 @@ const MAX_PLAYER_MOVES_4x4 = 18;
 const MAX_PLAYER_MOVES_6x6 = 60;
 const MAX_PLAYER_MOVES_8x8 = 135;
 
-const TOTAL_SECONDS_4x4 = 35;
+const TOTAL_SECONDS_4x4 = 340;
 const TOTAL_SECONDS_6x6 = 120;
 const TOTAL_SECONDS_8x8 = 450;
 
@@ -190,10 +190,13 @@ export function useCardsLogic() {
     setCurrentCardPairIndices(currentPair);
     setPlayerMovesCount(nextMovesCount);
 
-    if (nextMovesCount === 0) {
+    if (nextMovesCount < 0) {
       setPage("lose");
       return;
     }
+
+    // Acum recunoaste miscarea cu numarul 1 daca e corecta si ma baga in winning mode (ceea ce e FOARTE BINE),
+    // DAR ma lasa sa fac miscare SI cand movesCount ESTE DEJA EGAL CU 0 (ceea ce nu ar trebui) DUPA CARE ma baga in losing mode.
 
     if (firstCard === secondCard) {
       const nextFlippedUp = [...flippedUpCardIndices, ...currentPair];
